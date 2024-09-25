@@ -31,14 +31,34 @@
 - git clone [리포지토리 URL]
 - cd [프로젝트 폴더명]
 
-2. 의존성을 설치:
+2. 의존성을 설치
 
    ```bash
    npm install
    ```
 
-3. 개발 서버 실행
+3. **JSON Server 설정**
+
+   - json-server를 개발 의존성으로 설치합니다
+
+     ```bash
+     npm install -D json-server
+     ```
+
+   - package.json 파일에 다음 스크립트를 추가
+
+     ```json
+     "dev:db": "json-server --watch db.json --port=8888"
+     ```
+
+4. 개발 서버 실행
 
    ```bash
    npm run dev
+   ```
+
+5. JSON Server 실행 다른 터미널에서 다음 명령어를 실행
+
+   ```bash
+   npm run dev:db
    ```
