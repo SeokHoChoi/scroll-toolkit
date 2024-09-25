@@ -26,12 +26,12 @@
 
 ## 실행 방법
 
-1. 프로젝트를 클론
+1. **프로젝트를 클론**
 
 - git clone [리포지토리 URL]
 - cd [프로젝트 폴더명]
 
-2. 의존성을 설치
+2. **의존성을 설치**
 
    ```bash
    npm install
@@ -51,13 +51,13 @@
      "dev:db": "json-server --watch db.json --port=8888"
      ```
 
-4. 개발 서버 실행
+4. **개발 서버 실행**
 
    ```bash
    npm run dev
    ```
 
-5. JSON Server 실행 다른 터미널에서 다음 명령어를 실행
+5. **JSON Server 실행 다른 터미널에서 다음 명령어를 실행**
 
    ```bash
    npm run dev:db
