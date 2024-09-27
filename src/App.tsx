@@ -1,34 +1,89 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import { Product, MockData, Meta } from './types/mock';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const meta: Meta = {
+    totalItems: 118,
+    totalPages: 12,
+    itemsPerPage: 10,
+  };
+
+  const fetchProducts = async (page: number) => {
+    if (!hasMore) return; // 더 이상 가져올 데이터가 없으면 함수 종료
+
+    setLoading(true);
+    const res = await fetch(
+      `http://localhost:8888/products?_page=${page}&_per_page=10`
+    );
+    const productsInfo = await res.json();
+    const data: MockData = {
+      meta: meta,
+      products: productsInfo.data,
+    };
+
+    // 기존 제품과 새로운 제품을 비교하여 중복되지 않는 제품만 추가
+    setProducts((prev) => {
+      const existingIds = new Set(prev.map((product) => product.productId));
+      const newProducts = data.products.filter(
+        (product) => !existingIds.has(product.productId)
+      );
+      return [...prev, ...newProducts];
+    });
+    // 데이터가 존재하고, 페이지 수가 더 존재하면 hasMore를 true로 설정
+    setHasMore(data.products.length > 0 && page < data.meta.totalPages);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchProducts(page);
+  }, [page]);
+  console.log(products);
+  const lastProductRef = useRef<HTMLLIElement | null>(null);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (observer.current) observer.current.disconnect();
+
+    const callback = (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage((prev) => prev + 1);
+      }
+    };
+
+    observer.current = new IntersectionObserver(callback);
+    if (lastProductRef.current) {
+      observer.current.observe(lastProductRef.current);
+    }
+  }, [loading, hasMore]);
+
+  const totalAmount = products.reduce((acc, product) => acc + product.price, 0);
 
   return (
-    <>
+    <div>
+      <h1>Product List</h1>
       <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
+        <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
       </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <ul>
+        {products.map((product, index) => (
+          <li
+            key={product.productId}
+            ref={index === products.length - 1 ? lastProductRef : null}
+          >
+            {product.productName} - ${product.price}
+          </li>
+        ))}
+      </ul>
+      {loading && <div>Loading...</div>}
+    </div>
   );
 }
 
