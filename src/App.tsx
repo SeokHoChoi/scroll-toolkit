@@ -81,7 +81,7 @@ function App() {
   }, [loading, hasMore]);
 
   const totalAmount = products.reduce((acc, product) => acc + product.price, 0);
-
+  console.log(products);
   return (
     <div>
       <h1>Product List</h1>
