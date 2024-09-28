@@ -1,6 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Product, MockData, Meta } from './types/mock';
+
+const META: Meta = {
+  totalItems: 118,
+  totalPages: 12,
+  itemsPerPage: 10,
+};
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -9,42 +15,40 @@ function App() {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const meta: Meta = {
-    totalItems: 118,
-    totalPages: 12,
-    itemsPerPage: 10,
-  };
+  const fetchProducts = useCallback(
+    async (page: number) => {
+      if (!hasMore) return; // 더 이상 가져올 데이터가 없으면 함수 종료
 
-  const fetchProducts = async (page: number) => {
-    if (!hasMore) return; // 더 이상 가져올 데이터가 없으면 함수 종료
-
-    setLoading(true);
-    const res = await fetch(
-      `http://localhost:8888/products?_page=${page}&_per_page=10`
-    );
-    const productsInfo = await res.json();
-    const data: MockData = {
-      meta: meta,
-      products: productsInfo.data,
-    };
-
-    // 기존 제품과 새로운 제품을 비교하여 중복되지 않는 제품만 추가
-    setProducts((prev) => {
-      const existingIds = new Set(prev.map((product) => product.productId));
-      const newProducts = data.products.filter(
-        (product) => !existingIds.has(product.productId)
+      setLoading(true);
+      const res = await fetch(
+        `http://localhost:8888/products?_page=${page}&_per_page=${META.itemsPerPage}`
       );
-      return [...prev, ...newProducts];
-    });
-    // 데이터가 존재하고, 페이지 수가 더 존재하면 hasMore를 true로 설정
-    setHasMore(data.products.length > 0 && page < data.meta.totalPages);
-    setLoading(false);
-  };
+      const productsInfo = await res.json();
+      const data: MockData = {
+        meta: META,
+        products: productsInfo.data,
+      };
+
+      // 기존 제품과 새로운 제품을 비교하여 중복되지 않는 제품만 추가
+      setProducts((prev) => {
+        const existingIds = new Set(prev.map((product) => product.productId));
+        const newProducts = data.products.filter(
+          (product) => !existingIds.has(product.productId)
+        );
+        return [...prev, ...newProducts];
+      });
+
+      // 데이터가 존재하고, 페이지 수가 더 존재하면 hasMore를 true로 설정
+      setHasMore(data.products.length > 0 && page < data.meta.totalPages);
+      setLoading(false);
+    },
+    [hasMore]
+  );
 
   useEffect(() => {
     fetchProducts(page);
-  }, [page]);
-  console.log(products);
+  }, [page, fetchProducts]);
+
   const lastProductRef = useRef<HTMLLIElement | null>(null);
 
   useEffect(() => {
