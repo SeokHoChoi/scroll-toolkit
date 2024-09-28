@@ -64,7 +64,7 @@ function App() {
   const lastProductRef = useRef<HTMLLIElement | null>(null);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || !hasMore) return;
 
     if (observer.current) observer.current.disconnect();
 
@@ -81,7 +81,17 @@ function App() {
   }, [loading, hasMore]);
 
   const totalAmount = products.reduce((acc, product) => acc + product.price, 0);
-  console.log(products);
+
+  /**
+   * fetchProducts가 호출되는 횟수와 어떤 페이지를 가져오는지 확인
+   * 또한 제품 배열을 로깅하여 현재 로드된 항목 수를 확인
+   */
+  useEffect(() => {
+    console.log('Current page:', page);
+    console.log('Loaded products:', products.length);
+    console.log(products);
+  }, [page, products]);
+
   return (
     <div>
       <h1>Product List</h1>
