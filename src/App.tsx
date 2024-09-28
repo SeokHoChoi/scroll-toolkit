@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Product, MockData, Meta } from './types/mock';
+import ScreenMessage from './components/ScreenMessage';
 
 const META: Meta = {
   totalItems: 118,
@@ -87,7 +88,7 @@ function App() {
       <div>
         <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
       </div>
-      {error && <div style={{ color: 'red' }}>Error: {error}</div>}
+      {error && <ScreenMessage type='error' errorMessage={error} />}
       <ul>
         {products.map((product, index) => (
           <li
@@ -98,7 +99,7 @@ function App() {
           </li>
         ))}
       </ul>
-      {loading && <div>Loading...</div>}
+      {loading && <ScreenMessage type='loading' />}
     </div>
   );
 }
