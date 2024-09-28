@@ -11,6 +11,7 @@ const META: Meta = {
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const observer = useRef<IntersectionObserver | null>(null);
@@ -20,27 +21,37 @@ function App() {
       if (!hasMore) return; // 더 이상 가져올 데이터가 없으면 함수 종료
 
       setLoading(true);
-      const res = await fetch(
-        `http://localhost:8888/products?_page=${page}&_per_page=${META.itemsPerPage}`
-      );
-      const productsInfo = await res.json();
-      const data: MockData = {
-        meta: META,
-        products: productsInfo.data,
-      };
-
-      // 기존 제품과 새로운 제품을 비교하여 중복되지 않는 제품만 추가
-      setProducts((prev) => {
-        const existingIds = new Set(prev.map((product) => product.productId));
-        const newProducts = data.products.filter(
-          (product) => !existingIds.has(product.productId)
+      setError(null);
+      try {
+        const res = await fetch(
+          `http://localhost:8888/products?_page=${page}&_per_page=${META.itemsPerPage}`
         );
-        return [...prev, ...newProducts];
-      });
+        const productsInfo = await res.json();
+        const data: MockData = {
+          meta: META,
+          products: productsInfo.data,
+        };
 
-      // 데이터가 존재하고, 페이지 수가 더 존재하면 hasMore를 true로 설정
-      setHasMore(data.products.length > 0 && page < data.meta.totalPages);
-      setLoading(false);
+        // 기존 제품과 새로운 제품을 비교하여 중복되지 않는 제품만 추가
+        setProducts((prev) => {
+          const existingIds = new Set(prev.map((product) => product.productId));
+          const newProducts = data.products.filter(
+            (product) => !existingIds.has(product.productId)
+          );
+          return [...prev, ...newProducts];
+        });
+
+        // 데이터가 존재하고, 페이지 수가 더 존재하면 hasMore를 true로 설정
+        setHasMore(data.products.length > 0 && page < data.meta.totalPages);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
     },
     [hasMore]
   );
@@ -76,6 +87,7 @@ function App() {
       <div>
         <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
       </div>
+      {error && <div style={{ color: 'red' }}>Error: {error}</div>}
       <ul>
         {products.map((product, index) => (
           <li
