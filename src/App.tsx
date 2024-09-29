@@ -9,6 +9,12 @@ const META: Meta = {
   itemsPerPage: 10,
 };
 
+const options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.5,
+};
+
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -74,7 +80,7 @@ function App() {
       }
     };
 
-    observer.current = new IntersectionObserver(callback);
+    observer.current = new IntersectionObserver(callback, options);
     if (lastProductRef.current) {
       observer.current.observe(lastProductRef.current);
     }
