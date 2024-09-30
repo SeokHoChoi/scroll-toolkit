@@ -77,7 +77,7 @@ function App() {
     if (observer.current) observer.current.disconnect();
 
     const callback = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting && hasMore) {
+      if (entries[0].isIntersecting && hasMore && !loading) {
         setPage((prev) => prev + 1);
       }
     };
@@ -106,8 +106,8 @@ function App() {
       <div>
         <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
       </div>
-      {error && <ScreenMessage type='error' errorMessage={error} />}
       <div className='scroll-container' ref={scrollElementRef}>
+        {error && <ScreenMessage type='error' errorMessage={error} />}
         <VirtualScroll
           scrollElement={scrollElementRef.current}
           virtualItemCount={20}
@@ -127,8 +127,8 @@ function App() {
             </ul>
           )}
         />
+        {loading && <ScreenMessage type='loading' />}
       </div>
-      {loading && <ScreenMessage type='loading' />}
     </div>
   );
 }
