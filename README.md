@@ -1,6 +1,42 @@
 # 무한 스크롤 구현 프로젝트
 
-![동작 GIF 추가 공간](링크)
+## 기능 시연
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+
+  <!-- 기본 동작 -->
+  <div style="flex: 1; max-width: 70%;">
+    <img src="https://github.com/user-attachments/assets/38c3f6f4-fbcb-4fa9-abd5-5c4b0a9a6fec" alt="default" style="width: 200px; height: auto;">
+    <p><strong>기본 동작</strong><br>
+    </p>
+  </div>
+  <br></br>
+
+  <!-- 로딩 (스켈레톤) -->
+  <div style="flex: 1; max-width: 70%;">
+    <img src="https://github.com/user-attachments/assets/7bba5a6a-adf8-48a9-8470-6f788f8cd81a" alt="loading" style="width: 200px; height: auto;">
+    <p><strong>로딩</strong><br>
+    </p>
+  </div>
+  <br></br>
+
+  <!-- 에러 -->
+  <div style="flex: 1; max-width: 70%;">
+    <img src="https://github.com/user-attachments/assets/26c50ca2-ddda-42f7-817d-9b6760ea189d" alt="error" style="width: 200px; height: auto;">
+    <p><strong>에러</strong><br>
+    </p>
+  </div>
+  <br></br>
+
+  <!-- 가상 스크롤 -->
+  <div style="flex: 1; max-width: 70%;">
+    <img src="https://github.com/user-attachments/assets/62b7878a-94eb-4a10-8de7-536016c95c74" alt="v-scroll" style="width: 200px; height: auto;">
+    <p><strong>가상 스크롤</strong><br>
+    </p>
+  </div>
+  <br></br>
+  
+</div>
 
 ## 프로젝트 개요
 
