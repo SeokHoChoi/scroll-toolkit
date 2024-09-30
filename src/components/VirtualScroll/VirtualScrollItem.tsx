@@ -11,7 +11,7 @@ export default function VirtualScrollItem({
   item: any;
 }) {
   /** useRef를 사용하여 DOM 요소에 대한 참조를 생성 */
-  const itemRef = useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLLIElement>(null);
 
   /** useGetVirtualScroller 훅을 사용하여 가상 스크롤러 객체를 가져옵니다. */
   const virtualScroller = useGetVirtualScroller();
@@ -54,5 +54,5 @@ export default function VirtualScrollItem({
     return () => clearTimeout(timerId);
   }, [item, virtualScroller]);
 
-  return <div ref={itemRef}>{children}</div>;
+  return <li ref={itemRef}>{children}</li>;
 }

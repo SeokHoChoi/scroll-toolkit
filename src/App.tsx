@@ -69,7 +69,7 @@ function App() {
     fetchProducts(page);
   }, [page, fetchProducts]);
 
-  const lastProductRef = useRef<HTMLLIElement | null>(null);
+  const lastProductRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (loading || !hasMore) return;
@@ -101,33 +101,27 @@ function App() {
   }, [page, products]);
 
   return (
-    <div>
-      <h1>Product List</h1>
+    <div className='container'>
+      <h1 className='header'>Product List</h1>
       <div>
         <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
       </div>
       {error && <ScreenMessage type='error' errorMessage={error} />}
-      <div
-        ref={scrollElementRef}
-        style={{
-          overflow: 'scroll',
-          height: '100px',
-          background: 'red',
-        }}
-      >
+      <div className='scroll-container' ref={scrollElementRef}>
         <VirtualScroll
           scrollElement={scrollElementRef.current}
-          virtualItemCount={10}
+          virtualItemCount={20}
           itemList={products}
           render={(itemList) => (
             <ul>
               {itemList.map((product, index) => (
                 <VirtualScrollItem key={product.id} item={product}>
-                  <li
-                    ref={index === products.length - 1 ? lastProductRef : null}
+                  <div
+                    className='product-item'
+                    ref={index === itemList.length - 1 ? lastProductRef : null}
                   >
                     {product.productName} - ${product.price}
-                  </li>
+                  </div>
                 </VirtualScrollItem>
               ))}
             </ul>

@@ -134,7 +134,15 @@ export default function VirtualScroll<T extends { id: string }>({
   const value = useMemo(() => ({ virtualScroller }), [virtualScroller]);
 
   return (
-    <div ref={virtualScrollRef}>
+    <div
+      ref={virtualScrollRef}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+      }}
+    >
       <VirtualScrollContext.Provider value={value}>
         <div style={{ height: prependHeight }} />
         {render(virtualItemList)}
