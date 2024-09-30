@@ -7,14 +7,14 @@
   <!-- 기본 동작 -->
   <div style="flex: 1; max-width: 70%;">
     <img src="https://github.com/user-attachments/assets/38c3f6f4-fbcb-4fa9-abd5-5c4b0a9a6fec" alt="default" style="width: 300px; height: auto;">
-    <p><strong>기본 동작</strong></br><br>이 GIF는 무한스크롤의 기본 동작을 보여줍니다.</p>
+    <p><strong>기본 동작</strong><br>이 GIF는 무한스크롤의 기본 동작을 보여줍니다.</p>
   </div>
   <br></br>
 
   <!-- 로딩 (스켈레톤) -->
   <div style="flex: 1; max-width: 70%;">
     <img src="https://github.com/user-attachments/assets/7bba5a6a-adf8-48a9-8470-6f788f8cd81a" alt="loading" style="width: 300px; height: auto;">
-    <p><strong>로딩</strong><br></br>
+    <p><strong>로딩</strong><br>
     데이터를 새롭게 불러올 때, 로딩 컴포넌트인 스켈레톤 UI가 렌더링됩니다. 이 컴포넌트는 사용자가 데이터를 기다리는 동안 시각적인 피드백을 제공하여, 사용자 경험을 개선합니다. 데이터 로딩이 완료되면 해당 컴포넌트는 언마운트되어 화면에서 사라지게 됩니다. 이를 통해 사용자는 데이터가 정상적으로 불러와졌음을 인지할 수 있습니다.
     </p>
   </div>
@@ -23,7 +23,7 @@
   <!-- 에러 -->
   <div style="flex: 1; max-width: 70%;">
     <img src="https://github.com/user-attachments/assets/26c50ca2-ddda-42f7-817d-9b6760ea189d" alt="error" style="width: 300px; height: auto;">
-    <p><strong>에러</strong><br></br>
+    <p><strong>에러</strong><br>
     데이터를 불러오는 과정에서 에러가 발생하면, 에러 컴포넌트가 렌더링되어 사용자가 문제를 인식하고 대응할 수 있도록 돕습니다.
     </p>
   </div>
@@ -32,7 +32,7 @@
   <!-- 가상 스크롤 -->
   <div style="flex: 1; max-width: 70%;">
     <img src="https://github.com/user-attachments/assets/62b7878a-94eb-4a10-8de7-536016c95c74" alt="v-scroll" style="width: 300px; height: auto;">
-    <p><strong>가상 스크롤</strong><br></br>
+    <p><strong>가상 스크롤</strong><br>
     가상 스크롤은 화면에 보이지 않는 DOM 요소까지 모두 렌더링할 필요가 없기에 추가되었습니다. 일반적으로 대량의 데이터를 처리할 때, 모든 요소를 리렌더링하는 것은 성능에 부담이 될 수 있습니다. 따라서 화면에 실제로 보이는 요소들만 렌더링하여 불필요한 리렌더링을 방지합니다.
     </p>
   </div>
