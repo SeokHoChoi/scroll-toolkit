@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Product, MockData, Meta } from './types/mock';
 import ScreenMessage from './components/ScreenMessage';
+import { VirtualScroll, VirtualScrollItem } from './components/VirtualScroll';
 
 const META: Meta = {
   totalItems: 118,
@@ -11,7 +12,7 @@ const META: Meta = {
 
 const options = {
   root: null,
-  rootMargin: '0px',
+  rootMargin: '100px 0px 0px 0px',
   threshold: 0.5,
 };
 
@@ -21,6 +22,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const scrollElementRef = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
 
   const fetchProducts = useCallback(
@@ -41,9 +43,9 @@ function App() {
 
         // 기존 제품과 새로운 제품을 비교하여 중복되지 않는 제품만 추가
         setProducts((prev) => {
-          const existingIds = new Set(prev.map((product) => product.productId));
+          const existingIds = new Set(prev.map((product) => product.id));
           const newProducts = data.products.filter(
-            (product) => !existingIds.has(product.productId)
+            (product) => !existingIds.has(product.id)
           );
           return [...prev, ...newProducts];
         });
@@ -105,16 +107,33 @@ function App() {
         <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
       </div>
       {error && <ScreenMessage type='error' errorMessage={error} />}
-      <ul>
-        {products.map((product, index) => (
-          <li
-            key={product.productId}
-            ref={index === products.length - 1 ? lastProductRef : null}
-          >
-            {product.productName} - ${product.price}
-          </li>
-        ))}
-      </ul>
+      <div
+        ref={scrollElementRef}
+        style={{
+          overflow: 'scroll',
+          height: '100px',
+          background: 'red',
+        }}
+      >
+        <VirtualScroll
+          scrollElement={scrollElementRef.current}
+          virtualItemCount={10}
+          itemList={products}
+          render={(itemList) => (
+            <ul>
+              {itemList.map((product, index) => (
+                <VirtualScrollItem key={product.id} item={product}>
+                  <li
+                    ref={index === products.length - 1 ? lastProductRef : null}
+                  >
+                    {product.productName} - ${product.price}
+                  </li>
+                </VirtualScrollItem>
+              ))}
+            </ul>
+          )}
+        />
+      </div>
       {loading && <ScreenMessage type='loading' />}
     </div>
   );
