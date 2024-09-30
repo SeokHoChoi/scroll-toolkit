@@ -7,7 +7,7 @@
   <!-- 기본 동작 -->
   <div style="flex: 1; max-width: 70%;">
     <img src="https://github.com/user-attachments/assets/38c3f6f4-fbcb-4fa9-abd5-5c4b0a9a6fec" alt="default" style="width: 300px; height: auto;">
-    <p><strong>기본 동작</strong><br>이 GIF는 무한스크롤의 기본 동작을 보여줍니다.</p>
+    <p><strong>기본 동작</strong><br>이 GIF는 무한스크롤의 기본 동작을 보여줍니다. 가져온 상품들의 물품의 가격 총 합을 상단에 보여줍니다.</p>
   </div>
   <br></br>
 
